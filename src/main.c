@@ -6,28 +6,23 @@
 #define soundindex 0
 #define photoindex 1
 
-
-void * handles[2];
-Session * sessions[2];
-ContentInfo * loadContent(char * filename);
-BKK v_check;
-BKK i_check;
-
-void initSessions();
 int read_file_content(const char *file_path, uint8_t **content, size_t *content_size);
-int checkFile(char * filename);
-void foreach(char * filename);
-void init();
-void loadscheckers();
 Session * initSession(void* handle, char * symbol, char * config);
+
+void initSessions_(Checker * self);
+void loadscheckers_(Checker * self);
+int checkFile_(Checker * self, char * filename);
+Checker * init__(int a);
 
 
 int main(int argc, char *argv[])
 {
-  init();
-  printf("%d\n",checkFile("./tested.wav"));
+  Checker * initial = init__(12);
+  initial ->checkFile(initial, "./tested.wav");
+  printf("%d\n", initial ->field );
   for (int i=1; i<argc; i++)
-    foreach(argv[i]);
+    initial->foreach(initial, argv[i]);
+
 }
 
 Session * initSession(void* handle, char * symbol, char * config){
@@ -47,25 +42,6 @@ Session * initSession(void* handle, char * symbol, char * config){
   return sess;
 }
 
-void init()
-{
-  printf("initialisation....\n\n");
-  handles[soundindex] = dlopen(soundso, RTLD_LAZY);
-  handles[photoindex] = dlopen(photoso, RTLD_LAZY);
-
-  if (!handles[soundindex])
-    printf("error loading sound so");
-  else
-    printf("Load success sound so");
-
-  if (!handles[photoindex])
-    printf("error loading photo so");
-  else
-    printf("Load success photo so");
-  initSessions();
-  loadscheckers();
-}
-
 ContentInfo * loadContent(char * filename)
 {
   ContentInfo * ci=(ContentInfo*)malloc(sizeof(ContentInfo));
@@ -73,16 +49,6 @@ ContentInfo * loadContent(char * filename)
   return ci;
 }
 
-void initSessions()
-{
-  sessions[photoindex]=initSession(handles[photoindex], "i_create_session", photoconfig);
-  sessions[soundindex]=initSession(handles[soundindex], "v_create_session", soundconfig);
-  int i;
-  for (i=0;i<2; i++){
-    if (sessions[i]==NULL)
-      printf("Error create session #%d\n", i);
-  }
-}
 
 int read_file_content(const char *file_path, uint8_t **content, size_t *content_size) {
   FILE *fd = fopen(file_path, "rb");
@@ -99,11 +65,11 @@ int read_file_content(const char *file_path, uint8_t **content, size_t *content_
   return 1;
 }
 
-void foreach(char * filename){
+void foreach_(Checker * self, char * filename){
     FILE* fp;
     char buf[1024];
     if ((fp = fopen(filename, "r")) == NULL)
-    { /* Open source file. */
+    {
         perror("fopen source-file");
         return;
     }
@@ -111,33 +77,24 @@ void foreach(char * filename){
     while (fgets(buf, sizeof(buf), fp) != NULL)
     {
         buf[strlen(buf) - 1] = '\0'; // eat the newline fgets() stores
-        checkFile(buf);
+        self->checkFile(self, buf);
     }
     fclose(fp);
     return ;
 }
 
-void loadscheckers(){
-  i_check = (BKKCheck)(dlsym(handles[photoindex],"i_check_format"));
-  v_check = (BKKCheck)(dlsym(handles[soundindex],"v_check"));
-  if (!i_check)
-    printf("error load i_check");
-  if (!v_check)
-    printf("error load v_check");
 
-}
-
-int checkFile(char * filename)
+int checkFile_(Checker * self, char * filename)
 {
   BKKCheck check;
   ContentInfo * ci;
-  if (loadContent(filename) == NULL)
+  if (self->loadContent(filename) == NULL)
     return -1;
-  ci = loadContent(filename);
+  ci = self->loadContent(filename);
   if (strstr(filename, "wav")!=NULL){
     printf("CHECKING WAV FILE");
-    check=v_check;
-    if (!check(sessions[soundindex], ci ->content, ci ->size))
+    check=self->v_check;
+    if (!check(self->sessions[soundindex], ci ->content, ci ->size))
     {
 	printf("Check failed!\n");
 	return -3;
@@ -146,8 +103,8 @@ int checkFile(char * filename)
     return 0;
   }
   printf("CHECKING photo FILE");
-  check=i_check;
-    if (!check(sessions[photoindex], ci ->content, ci ->size))
+  check=self->i_check;
+    if (!check(self->sessions[photoindex], ci ->content, ci ->size))
     {
 	printf("Check failed!\n");
 	return -3;
@@ -155,3 +112,57 @@ int checkFile(char * filename)
   else printf("Checking passed\n");
   return 0;
 }
+
+void initSessions_(Checker * self)
+{
+  self ->sessions[photoindex]=self->initSession(self->handles[photoindex], "i_create_session", photoconfig);
+  self->sessions[soundindex]=self->initSession(self->handles[soundindex], "v_create_session", soundconfig);
+  int i;
+  for (i=0;i<2; i++){
+    if (self->sessions[i]==NULL)
+      printf("Error create session #%d\n", i);
+  }
+}
+
+void loadscheckers_(Checker * self){
+  self->i_check = (BKKCheck)(dlsym(self->handles[photoindex],"i_check_format"));
+  self->v_check = (BKKCheck)(dlsym(self->handles[soundindex],"v_check"));
+  if (!self->i_check)
+    printf("error load i_check");
+  if (!self->v_check)
+    printf("error load v_check");
+
+}
+
+Checker * init__(int a)
+{
+  Checker * res = (Checker*)malloc(sizeof(Checker));
+
+  res -> field = a;
+  res -> loadContent = loadContent;
+  res -> handles[soundindex] = dlopen(soundso, RTLD_LAZY);
+  res -> handles[photoindex] = dlopen(photoso, RTLD_LAZY);
+
+  if (!res->handles[soundindex])
+    printf("error loading sound so");
+  else
+    printf("Load success sound so");
+
+  if (!res->handles[photoindex])
+    printf("error loading photo so");
+
+  res -> initSession=initSession;
+  res -> initSessions=initSessions_;
+  res ->loadcheckers=loadscheckers_;
+
+
+  res->loadContent=loadContent;
+  res->checkFile = checkFile_;
+  res->foreach=foreach_;
+  res->initSessions(res);
+  res->loadcheckers(res);
+  return res;
+}
+
+
+
