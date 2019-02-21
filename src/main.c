@@ -74,7 +74,7 @@ void foreach_(Checker * self, char * filename)
     return ;
 }
 
-void freeMap(ContentInfo * ci){
+void freeMem(ContentInfo * ci){
   free(ci->content);
   free(ci);
 }
@@ -89,25 +89,25 @@ int checkFile_(Checker * self, char * filename)
     printf("CHECKING WAV FILE %s", filename);
     if (!self->v_check(self->sessions[soundindex], ci->content, ci->size))
     {
-	freeMap(ci);
+	freeMem(ci);
 	printf("Check failed!\n");
 	return -3;
     }
     else
       printf("Checking passed\n");
-    freeMap(ci);
+    freeMem(ci);
     return 0;
   }
   printf("CHECKING photo FILE %s", filename);
   if (!self->i_check(self->sessions[photoindex], ci->content, ci->size))
   {
       printf("Check failed!\n");
-      freeMap(ci);
+      freeMem(ci);
       return -3;
   }
   else
     printf("Checking passed\n");
-  freeMap(ci);
+  freeMem(ci);
   return 0;
 }
 
