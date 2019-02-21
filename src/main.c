@@ -34,8 +34,10 @@ Session * initSession(void* handle, char * symbol, char * config)
 ContentInfo * loadContent(char * filename)
 {
   ContentInfo * ci=(ContentInfo*)malloc(sizeof(ContentInfo));
-  read_file_content(filename, &ci ->content, &ci->size);
-  return ci;
+  if (read_file_content(filename, &ci ->content, &ci->size))
+    return ci;
+  freeMem(ci);
+  return NULL;
 }
 
 int read_file_content(const char *file_path, uint8_t **content, size_t *content_size)
@@ -84,11 +86,7 @@ int checkFile_(Checker * self, char * filename)
 {
   ContentInfo * ci;
   if (self -> loadContent(filename) == NULL)
-  {
-      freeMem(ci);
       return -1;
-
-  }
   ci = self->loadContent(filename);
   if (strstr(filename, "wav")!=NULL){
     printf("CHECKING WAV FILE %s", filename);
