@@ -65,7 +65,8 @@ int read_file_content(const char *file_path, uint8_t **content, size_t *content_
   return 1;
 }
 
-void foreach_(Checker * self, char * filename){
+void foreach_(Checker * self, char * filename)
+{
     FILE* fp;
     char buf[1024];
     if ((fp = fopen(filename, "r")) == NULL)
