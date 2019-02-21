@@ -19,7 +19,7 @@ Session * initSession(void* handle, char * symbol, char * config)
   Session* sess = (Session*)malloc(sizeof(Session));
   create_session load = (create_session)(dlsym(handle, symbol));
   if (!load){
-    printf("error loading v_create_session\n\n");
+    printf("error loading v_create_session\n\n\n");
     sess=NULL;
   }
   sess->id="my_session";
@@ -162,6 +162,3 @@ int main(int argc, char *argv[])
   for (int i=1; i<argc; i++)
     initial->foreach(initial, argv[i]);
 }
-
-
-
