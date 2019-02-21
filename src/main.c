@@ -11,7 +11,7 @@ Session* initSession(void* handle, char* symbol, char* config);
 void initSessions_(Checker* self);
 void loadscheckers_(Checker* self);
 int checkFile_(Checker* self, char* filename);
-Checker* init__();
+Checker* Checker__();
 
 Session* initSession(void* handle, char* symbol, char* config)
 {
@@ -142,7 +142,7 @@ void loadscheckers_(Checker* self){
 
 }
 
-Checker* init__()
+Checker* Checker__()
 {
   Checker* res = (Checker*)malloc(sizeof(Checker));
   res->loadContent = loadContent;
@@ -172,7 +172,7 @@ Checker* init__()
 
 int main(int argc, char* argv[])
 {
-  Checker* initial = init__();
+  Checker* initial = Checker__();
   for (int i=1; i<argc; i++)
     initial->foreach(initial, argv[i]);
 }
