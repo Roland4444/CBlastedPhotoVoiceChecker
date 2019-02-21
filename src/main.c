@@ -18,7 +18,7 @@ Session * initSession(void* handle, char * symbol, char * config)
   Session* sess = (Session*)malloc(sizeof(Session));
   create_session load = (create_session)(dlsym(handle, symbol));
   if (!load){
-    printf("error loading v_create_session\n\n\n");
+    printf("error loading %s\n\n\n", symbol );
     sess=NULL;
   }
   sess->id="my_session";
@@ -74,6 +74,10 @@ void foreach_(Checker * self, char * filename)
     return ;
 }
 
+void freeMap(ContentInfo * ci){
+  free(ci->content);
+  free(ci);
+}
 
 int checkFile_(Checker * self, char * filename)
 {
@@ -85,25 +89,25 @@ int checkFile_(Checker * self, char * filename)
     printf("CHECKING WAV FILE %s", filename);
     if (!self->v_check(self->sessions[soundindex], ci->content, ci->size))
     {
-	free(ci);
+	freeMap(ci);
 	printf("Check failed!\n");
 	return -3;
     }
     else
       printf("Checking passed\n");
-    free(ci);
+    freeMap(ci);
     return 0;
   }
   printf("CHECKING photo FILE %s", filename);
   if (!self->i_check(self->sessions[photoindex], ci->content, ci->size))
   {
       printf("Check failed!\n");
-      free(ci);
+      freeMap(ci);
       return -3;
   }
   else
     printf("Checking passed\n");
-  free(ci);
+  freeMap(ci);
   return 0;
 }
 
