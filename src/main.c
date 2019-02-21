@@ -74,13 +74,9 @@ void foreach_(Checker * self, char * filename)
     return ;
 }
 
-void freeMem(ContentInfo * ci){
-  int i;
-  for(i=0; i < ci->size; i++){
-    printf("Clean index %d", i);
-    free(ci->content[i]);
-  }
-  printf("Clean cont");
+void freeMem(ContentInfo * ci)
+{
+  free(ci->content);
   free(ci);
 }
 
