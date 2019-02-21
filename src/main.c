@@ -75,6 +75,9 @@ void foreach_(Checker * self, char * filename)
 }
 
 void freeMem(ContentInfo * ci){
+  int i;
+  for(i=0; i < ci->size; i++)
+    free(ci->content[i]);
   free(ci->content);
   free(ci);
 }
