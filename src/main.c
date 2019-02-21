@@ -85,21 +85,25 @@ int checkFile_(Checker * self, char * filename)
     printf("CHECKING WAV FILE %s", filename);
     if (!self->v_check(self->sessions[soundindex], ci->content, ci->size))
     {
+	free(ci);
 	printf("Check failed!\n");
 	return -3;
     }
     else
       printf("Checking passed\n");
+    free(ci);
     return 0;
   }
   printf("CHECKING photo FILE %s", filename);
   if (!self->i_check(self->sessions[photoindex], ci->content, ci->size))
   {
       printf("Check failed!\n");
+      free(ci);
       return -3;
   }
   else
     printf("Checking passed\n");
+  free(ci);
   return 0;
 }
 
