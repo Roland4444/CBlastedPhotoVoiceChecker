@@ -12,20 +12,19 @@ Session * initSession(void* handle, char * symbol, char * config);
 void initSessions_(Checker * self);
 void loadscheckers_(Checker * self);
 int checkFile_(Checker * self, char * filename);
-Checker * init__(int a);
+Checker * init__();
 
 
 int main(int argc, char *argv[])
 {
-  Checker * initial = init__(12);
+  Checker * initial = init__();
   initial ->checkFile(initial, "./tested.wav");
-  printf("%d\n", initial ->field );
   for (int i=1; i<argc; i++)
     initial->foreach(initial, argv[i]);
-
 }
 
-Session * initSession(void* handle, char * symbol, char * config){
+Session * initSession(void* handle, char * symbol, char * config)
+{
   Session* sess = (Session*)malloc(sizeof(Session));
   create_session load = (create_session)(dlsym(handle, symbol));
   if (!load){
@@ -49,10 +48,11 @@ ContentInfo * loadContent(char * filename)
   return ci;
 }
 
-
-int read_file_content(const char *file_path, uint8_t **content, size_t *content_size) {
+int read_file_content(const char *file_path, uint8_t **content, size_t *content_size)
+{
   FILE *fd = fopen(file_path, "rb");
-  if (fd == NULL) {
+  if (fd == NULL)
+  {
     fprintf(stderr, "file \"%s\" not found\n", file_path);
     return 0;
   }
@@ -98,18 +98,20 @@ int checkFile_(Checker * self, char * filename)
     {
 	printf("Check failed!\n");
 	return -3;
-      }
-    else printf("Checking passed\n");
+    }
+    else
+      printf("Checking passed\n");
     return 0;
   }
   printf("CHECKING photo FILE");
   check=self->i_check;
-    if (!check(self->sessions[photoindex], ci ->content, ci ->size))
-    {
-	printf("Check failed!\n");
-	return -3;
-      }
-  else printf("Checking passed\n");
+  if (!check(self->sessions[photoindex], ci ->content, ci ->size))
+  {
+      printf("Check failed!\n");
+      return -3;
+  }
+  else
+    printf("Checking passed\n");
   return 0;
 }
 
@@ -134,11 +136,9 @@ void loadscheckers_(Checker * self){
 
 }
 
-Checker * init__(int a)
+Checker * init__()
 {
   Checker * res = (Checker*)malloc(sizeof(Checker));
-
-  res -> field = a;
   res -> loadContent = loadContent;
   res -> handles[soundindex] = dlopen(soundso, RTLD_LAZY);
   res -> handles[photoindex] = dlopen(photoso, RTLD_LAZY);
@@ -154,8 +154,6 @@ Checker * init__(int a)
   res -> initSession=initSession;
   res -> initSessions=initSessions_;
   res ->loadcheckers=loadscheckers_;
-
-
   res->loadContent=loadContent;
   res->checkFile = checkFile_;
   res->foreach=foreach_;
