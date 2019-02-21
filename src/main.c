@@ -6,14 +6,14 @@
 #define soundindex 0
 #define photoindex 1
 
-int read_file_content(const char *file_path, uint8_t **content, size_t *content_size);
-Session * initSession(void* handle, char * symbol, char * config);
-void initSessions_(Checker * self);
-void loadscheckers_(Checker * self);
-int checkFile_(Checker * self, char * filename);
-Checker * init__();
+int read_file_content(const char* file_path, uint8_t** content, size_t* content_size);
+Session* initSession(void* handle, char* symbol, char* config);
+void initSessions_(Checker* self);
+void loadscheckers_(Checker* self);
+int checkFile_(Checker* self, char* filename);
+Checker* init__();
 
-Session * initSession(void* handle, char * symbol, char * config)
+Session* initSession(void* handle, char* symbol, char* config)
 {
   Session* sess = (Session*)malloc(sizeof(Session));
   create_session load = (create_session)(dlsym(handle, symbol));
@@ -31,18 +31,18 @@ Session * initSession(void* handle, char * symbol, char * config)
   return sess;
 }
 
-ContentInfo * loadContent(char * filename)
+ContentInfo* loadContent(char * filename)
 {
-  ContentInfo * ci=(ContentInfo*)malloc(sizeof(ContentInfo));
+  ContentInfo* ci=(ContentInfo*)malloc(sizeof(ContentInfo));
   if (read_file_content(filename, &ci ->content, &ci->size))
     return ci;
   freeMem(ci);
   return NULL;
 }
 
-int read_file_content(const char *file_path, uint8_t **content, size_t *content_size)
+int read_file_content(const char* file_path, uint8_t** content, size_t* content_size)
 {
-  FILE *fd = fopen(file_path, "rb");
+  FILE* fd = fopen(file_path, "rb");
   if (fd == NULL)
   {
     fprintf(stderr, "file \"%s\" not found\n", file_path);
@@ -51,13 +51,13 @@ int read_file_content(const char *file_path, uint8_t **content, size_t *content_
   fseek(fd, 0L, SEEK_END);
   (*content_size) = (size_t) ftell(fd);
   rewind(fd);
-  (*content) = (uint8_t *) calloc(1, (*content_size));
+  (*content) = (uint8_t*) calloc(1, (*content_size));
   fread((*content), (*content_size), 1, fd);
   fclose(fd);
   return 1;
 }
 
-void foreach_(Checker * self, char * filename)
+void foreach_(Checker* self, char * filename)
 {
     FILE* fp;
     char buf[1024];
@@ -76,15 +76,15 @@ void foreach_(Checker * self, char * filename)
     return ;
 }
 
-void freeMem(ContentInfo * ci)
+void freeMem(ContentInfo* ci)
 {
   free(ci->content);
   free(ci);
 }
 
-int checkFile_(Checker * self, char * filename)
+int checkFile_(Checker* self, char* filename)
 {
-  ContentInfo * ci;
+  ContentInfo* ci;
   if (self -> loadContent(filename) == NULL)
       return -1;
   ci = self->loadContent(filename);
@@ -121,7 +121,7 @@ int checkFile_(Checker * self, char * filename)
 
 }
 
-void initSessions_(Checker * self)
+void initSessions_(Checker* self)
 {
   self->sessions[photoindex]=self->initSession(self->handles[photoindex], "i_create_session", photoconfig);
   self->sessions[soundindex]=self->initSession(self->handles[soundindex], "v_create_session", soundconfig);
@@ -132,7 +132,7 @@ void initSessions_(Checker * self)
   }
 }
 
-void loadscheckers_(Checker * self){
+void loadscheckers_(Checker* self){
   self->i_check = (BKKCheck)(dlsym(self->handles[photoindex],"i_check_format"));
   self->v_check = (BKKCheck)(dlsym(self->handles[soundindex],"v_check"));
   if (!self->i_check)
@@ -142,9 +142,9 @@ void loadscheckers_(Checker * self){
 
 }
 
-Checker * init__()
+Checker* init__()
 {
-  Checker * res = (Checker*)malloc(sizeof(Checker));
+  Checker* res = (Checker*)malloc(sizeof(Checker));
   res->loadContent = loadContent;
   res->handles[soundindex] = dlopen(soundso, RTLD_LAZY);
   res->handles[photoindex] = dlopen(photoso, RTLD_LAZY);
@@ -170,9 +170,9 @@ Checker * init__()
   return res;
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
-  Checker * initial = init__();
+  Checker* initial = init__();
   for (int i=1; i<argc; i++)
     initial->foreach(initial, argv[i]);
 }
