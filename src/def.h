@@ -33,7 +33,6 @@ typedef int (*BKK)(Session *,  uint8_t * , uint64_t);
 
 typedef struct
 {
-  
   void(*Checker)(void);    
   void * handles[2];
   Session * sessions[2];

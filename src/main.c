@@ -14,15 +14,6 @@ void loadscheckers_(Checker * self);
 int checkFile_(Checker * self, char * filename);
 Checker * init__();
 
-
-int main(int argc, char *argv[])
-{
-  Checker * initial = init__();
-  initial ->checkFile(initial, "./tested.wav");
-  for (int i=1; i<argc; i++)
-    initial->foreach(initial, argv[i]);
-}
-
 Session * initSession(void* handle, char * symbol, char * config)
 {
   Session* sess = (Session*)malloc(sizeof(Session));
@@ -161,6 +152,13 @@ Checker * init__()
   res->initSessions(res);
   res->loadcheckers(res);
   return res;
+}
+
+int main(int argc, char *argv[])
+{
+  Checker * initial = init__();
+  for (int i=1; i<argc; i++)
+    initial->foreach(initial, argv[i]);
 }
 
 
