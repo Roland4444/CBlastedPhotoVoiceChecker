@@ -84,7 +84,7 @@ int checkFile_(Checker * self, char * filename)
     return -1;
   ci = self->loadContent(filename);
   if (strstr(filename, "wav")!=NULL){
-    printf("CHECKING WAV FILE");
+    printf("CHECKING WAV FILE %s", filename);
     check=self->v_check;
     if (!check(self->sessions[soundindex], ci->content, ci->size))
     {
@@ -95,7 +95,7 @@ int checkFile_(Checker * self, char * filename)
       printf("Checking passed\n");
     return 0;
   }
-  printf("CHECKING photo FILE");
+  printf("CHECKING photo FILE %s", filename);
   check=self->i_check;
   if (!check(self->sessions[photoindex], ci->content, ci->size))
   {
