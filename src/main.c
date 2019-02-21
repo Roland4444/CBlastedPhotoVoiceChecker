@@ -80,13 +80,13 @@ int checkFile_(Checker * self, char * filename)
 {
   BKKCheck check;
   ContentInfo * ci;
-  if (self->loadContent(filename) == NULL)
+  if (self -> loadContent(filename) == NULL)
     return -1;
   ci = self->loadContent(filename);
   if (strstr(filename, "wav")!=NULL){
     printf("CHECKING WAV FILE");
     check=self->v_check;
-    if (!check(self->sessions[soundindex], ci ->content, ci ->size))
+    if (!check(self->sessions[soundindex], ci->content, ci->size))
     {
 	printf("Check failed!\n");
 	return -3;
@@ -97,7 +97,7 @@ int checkFile_(Checker * self, char * filename)
   }
   printf("CHECKING photo FILE");
   check=self->i_check;
-  if (!check(self->sessions[photoindex], ci ->content, ci ->size))
+  if (!check(self->sessions[photoindex], ci->content, ci->size))
   {
       printf("Check failed!\n");
       return -3;
@@ -109,7 +109,7 @@ int checkFile_(Checker * self, char * filename)
 
 void initSessions_(Checker * self)
 {
-  self ->sessions[photoindex]=self->initSession(self->handles[photoindex], "i_create_session", photoconfig);
+  self->sessions[photoindex]=self->initSession(self->handles[photoindex], "i_create_session", photoconfig);
   self->sessions[soundindex]=self->initSession(self->handles[soundindex], "v_create_session", soundconfig);
   int i;
   for (i=0;i<2; i++){
@@ -131,9 +131,9 @@ void loadscheckers_(Checker * self){
 Checker * init__()
 {
   Checker * res = (Checker*)malloc(sizeof(Checker));
-  res -> loadContent = loadContent;
-  res -> handles[soundindex] = dlopen(soundso, RTLD_LAZY);
-  res -> handles[photoindex] = dlopen(photoso, RTLD_LAZY);
+  res->loadContent = loadContent;
+  res->handles[soundindex] = dlopen(soundso, RTLD_LAZY);
+  res->handles[photoindex] = dlopen(photoso, RTLD_LAZY);
 
   if (!res->handles[soundindex])
     printf("error loading sound so");
@@ -142,15 +142,17 @@ Checker * init__()
 
   if (!res->handles[photoindex])
     printf("error loading photo so");
+  else
+    printf("Load success photo so");
 
-  res -> initSession=initSession;
-  res -> initSessions=initSessions_;
-  res -> loadcheckers=loadscheckers_;
-  res -> loadContent=loadContent;
-  res -> checkFile = checkFile_;
-  res -> foreach=foreach_;
-  res -> initSessions(res);
-  res -> loadcheckers(res);
+  res->initSession=initSession;
+  res->initSessions=initSessions_;
+  res->loadcheckers=loadscheckers_;
+  res->loadContent=loadContent;
+  res->checkFile = checkFile_;
+  res->foreach=foreach_;
+  res->initSessions(res);
+  res->loadcheckers(res);
   return res;
 }
 
