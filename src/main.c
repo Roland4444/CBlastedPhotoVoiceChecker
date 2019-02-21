@@ -84,7 +84,11 @@ int checkFile_(Checker * self, char * filename)
 {
   ContentInfo * ci;
   if (self -> loadContent(filename) == NULL)
-    return -1;
+  {
+      freeMem(ci);
+      return -1;
+
+  }
   ci = self->loadContent(filename);
   if (strstr(filename, "wav")!=NULL){
     printf("CHECKING WAV FILE %s", filename);
