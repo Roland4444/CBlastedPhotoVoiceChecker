@@ -8,7 +8,6 @@
 
 int read_file_content(const char *file_path, uint8_t **content, size_t *content_size);
 Session * initSession(void* handle, char * symbol, char * config);
-
 void initSessions_(Checker * self);
 void loadscheckers_(Checker * self);
 int checkFile_(Checker * self, char * filename);
