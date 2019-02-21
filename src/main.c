@@ -116,6 +116,8 @@ int checkFile_(Checker * self, char * filename)
       freeMem(ci);
       return 0;
   }
+  freeMem(ci);
+  return -9;
 
 }
 
