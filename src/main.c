@@ -145,12 +145,12 @@ Checker * init__()
 
   res -> initSession=initSession;
   res -> initSessions=initSessions_;
-  res ->loadcheckers=loadscheckers_;
-  res->loadContent=loadContent;
-  res->checkFile = checkFile_;
-  res->foreach=foreach_;
-  res->initSessions(res);
-  res->loadcheckers(res);
+  res -> loadcheckers=loadscheckers_;
+  res -> loadContent=loadContent;
+  res -> checkFile = checkFile_;
+  res -> foreach=foreach_;
+  res -> initSessions(res);
+  res -> loadcheckers(res);
   return res;
 }
 
