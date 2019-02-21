@@ -78,15 +78,13 @@ void foreach_(Checker * self, char * filename)
 
 int checkFile_(Checker * self, char * filename)
 {
-  BKKCheck check;
   ContentInfo * ci;
   if (self -> loadContent(filename) == NULL)
     return -1;
   ci = self->loadContent(filename);
   if (strstr(filename, "wav")!=NULL){
     printf("CHECKING WAV FILE %s", filename);
-    check=self->v_check;
-    if (!check(self->sessions[soundindex], ci->content, ci->size))
+    if (!self->v_check(self->sessions[soundindex], ci->content, ci->size))
     {
 	printf("Check failed!\n");
 	return -3;
@@ -96,8 +94,7 @@ int checkFile_(Checker * self, char * filename)
     return 0;
   }
   printf("CHECKING photo FILE %s", filename);
-  check=self->i_check;
-  if (!check(self->sessions[photoindex], ci->content, ci->size))
+  if (!self->i_check(self->sessions[photoindex], ci->content, ci->size))
   {
       printf("Check failed!\n");
       return -3;
