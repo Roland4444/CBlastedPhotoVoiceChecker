@@ -14,8 +14,8 @@ typedef struct
 typedef struct
 {
   Version version;
-  char *id;
-  void *payment;
+  char* id;
+  void* payment;
   int last_error;
 } Session;
 
@@ -25,20 +25,20 @@ typedef struct
   uint64_t size;
 }   ContentInfo;
 
-typedef int (*create_session)(struct Session*  , char *);
-typedef int (*BKKCheck)(Session *,  uint8_t * , uint64_t);
+typedef int (*create_session)(struct Session*  , char*);
+typedef int (*BKKCheck)(Session*,  uint8_t* , uint64_t);
 
 typedef struct
 {
   void(*Checker)(void);    
-  void * handles[2];
-  Session * sessions[2];
+  void* handles[2];
+  Session* sessions[2];
   BKKCheck v_check;
   BKKCheck i_check;
   ContentInfo*(*loadContent)(char * filename);
   void (*initSessions)(struct Checker*);
-  Session * (*initSession)(void*, char *, char *);
+  Session* (*initSession)(void*, char*, char*);
   void (*loadcheckers)(struct Checker*);
-  int (*checkFile)(struct Checker*, char *);
+  int (*checkFile)(struct Checker*, char*);
   void (*foreach)(struct Checker*, char*);
 } Checker;
