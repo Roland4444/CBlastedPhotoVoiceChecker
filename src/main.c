@@ -76,9 +76,11 @@ void foreach_(Checker * self, char * filename)
 
 void freeMem(ContentInfo * ci){
   int i;
-  for(i=0; i < ci->size; i++)
+  for(i=0; i < ci->size; i++){
+    printf("Clean index %d", i);
     free(ci->content[i]);
-  free(ci->content);
+  }
+  printf("Clean cont");
   free(ci);
 }
 
@@ -97,9 +99,11 @@ int checkFile_(Checker * self, char * filename)
 	return -3;
     }
     else
+    {
       printf("Checking passed\n");
-    freeMem(ci);
-    return 0;
+      freeMem(ci);
+      return 0;
+    }
   }
   printf("CHECKING photo FILE %s", filename);
   if (!self->i_check(self->sessions[photoindex], ci->content, ci->size))
@@ -109,9 +113,12 @@ int checkFile_(Checker * self, char * filename)
       return -3;
   }
   else
-    printf("Checking passed\n");
-  freeMem(ci);
-  return 0;
+  {
+      printf("Checking passed\n");
+      freeMem(ci);
+      return 0;
+  }
+
 }
 
 void initSessions_(Checker * self)
