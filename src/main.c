@@ -178,7 +178,7 @@ int main(int argc, char* argv[])
 }
 
 
-int check(char * filename)
+int checkin(char * filename)
 {
   int res;
   Checker* initial = Checker__();
