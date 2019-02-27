@@ -176,3 +176,14 @@ int main(int argc, char* argv[])
   for (int i=1; i<argc; i++)
     initial->foreach(initial, argv[i]);
 }
+
+
+int check(char * filename)
+{
+  int res;
+  Checker* initial = Checker__();
+  res = initial ->checkFile(initial, filename);
+  free(initial);
+  return res;
+
+}
