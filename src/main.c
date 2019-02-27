@@ -1,5 +1,5 @@
 #include <def.h>
-#define soundso "./libcv.so"
+#define soundso "./libsqc.so"
 #define photoso "./libBKKAdaptor.so"
 #define soundconfig "./cv_configuration.json"
 #define photoconfig "./ci_configuration.json"
