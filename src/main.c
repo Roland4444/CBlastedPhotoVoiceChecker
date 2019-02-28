@@ -12,6 +12,7 @@ void initSessions_(Checker* self);
 void loadscheckers_(Checker* self);
 int checkFile_(Checker* self, char* filename);
 Checker* Checker__();
+int checkin(char * filename);
 
 Session* initSession(void* handle, char* symbol, char* config)
 {
