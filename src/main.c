@@ -6,6 +6,8 @@
 #define soundindex 0
 #define photoindex 1
 
+Checker* CheckerPtr;
+
 int read_file_content(const char* file_path, uint8_t** content, size_t* content_size);
 Session* initSession(void* handle, char* symbol, char* config);
 void initSessions_(Checker* self);
@@ -188,3 +190,16 @@ int checkin(char * filename)
   return res;
 
 }
+
+
+void initGlobal()
+{
+  CheckerPtr = Checker__();
+}
+
+
+int checkFileGlobal(char * filename)
+{
+  return CheckerPtr ->checkFile(CheckerPtr, filename);
+}
+
