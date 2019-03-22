@@ -173,13 +173,19 @@ Checker* Checker__()
   return res;
 }
 
+void foreachGlobal(char * filename)
+{
+  printf("CALL  GLOBAL FOREACH>>\n\n");
+  foreach_(CheckerPtr, filename);
+}
+
 int main(int argc, char* argv[])
 {
   /// Checker* initial = Checker__();
   printf("USING GLOBAL OBJECT\n\n!!!");
   initGlobal();
   for (int i=1; i<argc; i++)
-    foreach_(CheckerPtr, argv[i]);
+    foreachGlobal(argv[i]);
 }
 
 
