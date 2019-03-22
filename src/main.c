@@ -203,3 +203,21 @@ int checkFileGlobal(char * filename)
   return CheckerPtr ->checkFile(CheckerPtr, filename);
 }
 
+
+int ret0(){
+  return 0;
+}
+
+int ret1(){
+  return 1;
+}
+
+int ret_1(){
+  return -1;
+}
+
+int ret_3(){
+  return -3;
+}
+
+
