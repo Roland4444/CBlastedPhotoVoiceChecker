@@ -176,6 +176,7 @@ Checker* Checker__()
 int main(int argc, char* argv[])
 {
   /// Checker* initial = Checker__();
+  priuntf("USING GLOBAL OBJECT\n\n!!!");
   initGlobal();
   for (int i=1; i<argc; i++)
     foreach_(CheckerPtr, argv[i]);
