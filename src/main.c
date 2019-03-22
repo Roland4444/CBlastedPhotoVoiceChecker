@@ -175,9 +175,10 @@ Checker* Checker__()
 
 int main(int argc, char* argv[])
 {
-  Checker* initial = Checker__();
+  /// Checker* initial = Checker__();
+  initGlobal();
   for (int i=1; i<argc; i++)
-    initial->foreach(initial, argv[i]);
+    foreach_(CheckerPtr, argv[i]);
 }
 
 
@@ -202,6 +203,11 @@ int checkFileGlobal(char * filename)
 {
   return CheckerPtr ->checkFile(CheckerPtr, filename);
 }
+
+
+
+
+
 
 
 int ret0(){
