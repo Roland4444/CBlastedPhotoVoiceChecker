@@ -214,56 +214,9 @@ int checkFileGlobal(char * filename)
 
 
 int lets_check(char * filename){
-  void* handle = dlopen("./libsqc.so", RTLD_NOW);
-  if (!handle){
-    printf("error load lib BKK");
-    return -10;
-  }
-  BKK load_ = (BKK)(dlsym(handle, "v_create_session"));
-  if (!load_)
-    {
-      printf("error load symbol");
-      return -11;
-    }
-  Session sess;
-  sess.id="my_session";
-  if (!load_(&sess, "./ci_configuration.json")){
-    printf("error create session");
-    return -12;
-  }
-  uint8_t** content;
-  uint8_t* direct;
-  FILE* fd = fopen(filename, "rb");
-  uint64_t *content_size;
-  if (fd != NULL) {
-    fseek(fd, 0L, SEEK_END);
-    uint64_t size = ((size_t) ftell(fd) );
-    content_size = & size;
-    rewind(fd);
-    uint8_t * pointer =(uint8_t *) calloc(1, (*content_size));
-    direct = pointer;
-    content = & pointer;
-    fread((*content), (*content_size), 1, fd);
-    fclose(fd);
-  }
-  else{
-    printf("error read file");
-    return -16;
-  }
-  i_check_format load = (i_check_format)(dlsym(handle,"v_check"));
-  if (!load) {
-    printf("load check failed", sess.last_error);
-    dlclose(handle);
-    return -19;
-  }
-  Session * pointSession = &sess;
-  printf("\n\n\nlets check!!!\n\n\n");
-  uint8_t result___ = load(pointSession, direct, *content_size);
-  printf("CONTENT SIZE ==>> %u", content_size);
-  printf("\nresult==>%u\n", result___);
-  printf("\nlast_error==>%d\n", pointSession->last_error);
-  free(content);
-
+  Checker* chk = Checker__();
+  int result___ = checkFile_(chk, filename);
+  free(chk);
   return result___;
 
 };
