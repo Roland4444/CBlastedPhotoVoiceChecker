@@ -31,6 +31,10 @@ Session* initSession(void* handle, char* symbol, char* config)
     return sess;
   }
   printf("Session creates succesfully\n\n");
+
+  printf("\n\nVERSION=>>\nMajor %d, minor %d, build %d\n\n\n", sess->version.major, sess->version.minor, sess->version.build);
+
+
   return sess;
 }
 
