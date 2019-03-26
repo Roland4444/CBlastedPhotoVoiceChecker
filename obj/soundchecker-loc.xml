@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<Locations >
+  <Project >
+    <file_marker column=" 2" line=" 125" >
+      <vfs_project>/home/roland/Documents/gnatprojs/soundchecker/soundchecker.gpr</vfs_project>
+      <vfs_file>/home/roland/Documents/gnatprojs/soundchecker/src/main.c</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 1" >
+      <vfs_project>/home/roland/Documents/gnatprojs/soundchecker/soundchecker.gpr</vfs_project>
+      <vfs_file>/home/roland/Documents/gnatprojs/soundchecker/src/def.h</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 1" >
+      <vfs_project>/home/roland/Documents/gnatprojs/soundchecker/soundchecker.gpr</vfs_project>
+      <vfs_file>/home/roland/Documents/gnatprojs/soundchecker/src/main.c</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 1" >
+      <vfs_project>/home/roland/Documents/gnatprojs/soundchecker/soundchecker.gpr</vfs_project>
+      <vfs_file>/home/roland/Documents/gnatprojs/soundchecker/src/def.h</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 1" >
+      <vfs_project>/home/roland/Documents/gnatprojs/soundchecker/soundchecker.gpr</vfs_project>
+      <vfs_file>/home/roland/Documents/gnatprojs/soundchecker/src/main.c</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 1" >
+      <vfs_project>/home/roland/Documents/gnatprojs/soundchecker/soundchecker.gpr</vfs_project>
+      <vfs_file>/home/roland/Documents/gnatprojs/soundchecker/src/def.h</vfs_file>
+    </file_marker>
+    <file_marker current="true" column=" 1" line=" 1" >
+      <vfs_project>/home/roland/Documents/gnatprojs/soundchecker/soundchecker.gpr</vfs_project>
+      <vfs_file>/home/roland/Documents/gnatprojs/soundchecker/src/main.c</vfs_file>
+    </file_marker>
+  </Project>
+</Locations>
