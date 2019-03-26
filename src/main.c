@@ -124,6 +124,13 @@ int checkFile_(Checker* self, char* filename)
 
 }
 
+char* getVersion(Checker* self)
+{
+  v_session_configuration_version get_sess_version = (v_session_configuration_version)(dlsym(self->handles[soundindex],"v_session_configuration_version"));
+  return get_sess_version(self->sessions[soundindex]);
+
+}
+
 void initSessions_(Checker* self)
 {
   self->sessions[photoindex]=self->initSession(self->handles[photoindex], "i_create_session", photoconfig);
@@ -133,6 +140,8 @@ void initSessions_(Checker* self)
     if (self->sessions[i]==NULL)
       printf("Error create session #%d\n", i);
   }
+
+
 }
 
 void loadscheckers_(Checker* self){
@@ -170,6 +179,13 @@ Checker* Checker__()
   res->foreach=foreach_;
   res->initSessions(res);
   res->loadcheckers(res);
+
+
+
+  getVersion(res);
+
+
+
   return res;
 }
 

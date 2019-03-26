@@ -30,6 +30,7 @@ typedef int (*BKKCheck)(Session*,  uint8_t* , uint64_t);
 
 typedef int (*BKK)(Session *,  char *path_to_config);
 typedef int (*i_check_format)(Session *,  uint8_t * , uint64_t);
+typedef char* (*v_session_configuration_version)(struct Session *);
 
 typedef struct
 {
