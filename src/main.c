@@ -181,8 +181,7 @@ Checker* Checker__()
   res->loadcheckers(res);
 
 
-
-  getVersion(res);
+  printf("\n\n\nVERSION===>\n\n%s\n\n\n\n",  getVersion(res));
 
 
 
