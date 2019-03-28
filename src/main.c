@@ -91,10 +91,10 @@ void freeMem(ContentInfo* ci)
 
 int checkFile_(Checker* self, char* filename)
 {
-  ContentInfo* ci = self->loadContent(filename);;
+  ContentInfo* ci = self->loadContent(filename);
   if (ci == NULL)
       return -1;
-
+  printf("SIZE CONTENT==%d\n\n\n", ci->size);
   if (strstr(filename, "wav")!=NULL){
     printf("CHECKING WAV FILE %s", filename);
     if (!self->v_check(self->sessions[soundindex], ci->content, ci->size))
