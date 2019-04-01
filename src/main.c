@@ -34,7 +34,6 @@ Session* initSession(void* handle, char* symbol, char* config)
 
   printf("\n\nVERSION=>>\nMajor %d, minor %d, build %d\n\n\n", sess->version.major, sess->version.minor, sess->version.build);
 
-
   return sess;
 }
 
@@ -93,38 +92,26 @@ int checkFile_(Checker* self, char* filename)
 {
   ContentInfo* ci = self->loadContent(filename);
   if (ci == NULL)
-      return -1;
+    return -1;
   printf("SIZE CONTENT==%d\n\n\n", ci->size);
   if (strstr(filename, "wav")!=NULL){
     printf("CHECKING WAV FILE %s", filename);
-    if (!self->v_check(self->sessions[soundindex], ci->content, ci->size))
-    {
-	freeMem(ci);
-	printf("Check failed!\n");
-	return -3;
-    }
-    else
-    {
-      printf("Checking passed\n");
-      freeMem(ci);
-      return 0;
-    }
-  }
-  printf("CHECKING photo FILE %s", filename);
-  if (!self->i_check(self->sessions[photoindex], ci->content, ci->size))
-  {
+    if (!v_check(self->sessions[soundindex], ci->content, ci->size))
       printf("Check failed!\n");
-      freeMem(ci);
-      return -3;
-  }
-  else
-  {
+    else
       printf("Checking passed\n");
-      freeMem(ci);
-      return 0;
+    freemem(ci);
+    return self->sessions[soundindex]->last_error;
   }
-  freeMem(ci);
-  return -9;
+
+  printf("CHECKING photo FILE %s", filename);
+  if (!i_check(self->sessionssessions[photoindex], ci->content, ci->size))
+    printf("Check failed!\n");
+  else
+    printf("Checking passed\n");
+
+  freemem(ci);
+  return self->sessions[photoindex]->last_error;
 
 }
 
