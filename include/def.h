@@ -4,26 +4,33 @@
 #include <dlfcn.h>
 #include <string.h> 
 
-typedef struct
+
+
+struct Version
 {
   int major;
   int minor;
   int build;
-} Version;
+} ;
 
-typedef struct
+typedef struct Version Version;
+
+struct Session
 {
   Version version;
   char* id;
   void* payment;
   int last_error;
-} Session;
+} ;
+typedef struct Session Session;  
 
-typedef struct
+
+struct ContentInfo
 {
   uint8_t* content;
   uint64_t size;
-}   ContentInfo;
+}   ;
+typedef struct ContentInfo ContentInfo; 
 
 typedef int (*create_session)(struct Session*  , char*);
 typedef int (*BKKCheck)(Session*,  uint8_t* , uint64_t);
@@ -32,7 +39,7 @@ typedef int (*BKK)(Session *,  char *path_to_config);
 typedef int (*i_check_format)(Session *,  uint8_t * , uint64_t);
 typedef char* (*v_session_configuration_version)(struct Session *);
 
-typedef struct
+struct Checker
 {
   void(*Checker)(void);    
   void* handles[2];
@@ -45,4 +52,6 @@ typedef struct
   void (*loadcheckers)(struct Checker*);
   int (*checkFile)(struct Checker*, char*);
   void (*foreach)(struct Checker*, char*);
-} Checker;
+} ;
+
+typedef struct Checker Checker;

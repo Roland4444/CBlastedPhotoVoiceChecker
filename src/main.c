@@ -16,7 +16,7 @@ int checkFile_(Checker* self, char* filename);
 Checker* Checker__();
 int checkin(char * filename);
 void lastErroeresult(int result);
-
+void freeMem(ContentInfo* ci);
 Session* initSession(void* handle, char* symbol, char* config)
 {
   Session* sess = (Session*)malloc(sizeof(Session));
@@ -103,22 +103,22 @@ int checkFile_(Checker* self, char* filename)
   printf("SIZE CONTENT==%d\n\n\n", ci->size);
   if (strstr(filename, "wav")!=NULL){
     printf("CHECKING WAV FILE %s", filename);
-    if (!v_check(self->sessions[soundindex], ci->content, ci->size))
+    if (!self->v_check(self->sessions[soundindex], ci->content, ci->size))
       printf("Check failed!\n");
     else
       printf("Checking passed\n");
     lastErroeresult(self->sessions[soundindex]->last_error);
-    freemem(ci);
+    freeMem(ci);
     return self->sessions[soundindex]->last_error;
   }
 
   printf("CHECKING photo FILE %s", filename);
-  if (!i_check(self->sessions[photoindex], ci->content, ci->size))
+  if (!self->i_check(self->sessions[photoindex], ci->content, ci->size))
     printf("Check failed!\n");
   else
     printf("Checking passed\n");
   lastErroeresult(self->sessions[photoindex]->last_error);
-  freemem(ci);
+  freeMem(ci);
   return self->sessions[photoindex]->last_error;
 
 }
@@ -193,16 +193,10 @@ void foreachGlobal(char * filename)
   foreach_(CheckerPtr, filename);
 }
 
-int main(int argc, char* argv[])
+void initGlobal()
 {
-  /// Checker* initial = Checker__();
-  printf("USING GLOBAL OBJECT\n\n!!!");
-  initGlobal();
-  for (int i=1; i<argc; i++)
-    lets_check(argv[i]);
-   // foreachGlobal(argv[i]);
+  CheckerPtr = Checker__();
 }
-
 
 int checkin(char * filename)
 {
@@ -211,14 +205,9 @@ int checkin(char * filename)
   res = initial ->checkFile(initial, filename);
   free(initial);
   return res;
-
 }
 
 
-void initGlobal()
-{
-  CheckerPtr = Checker__();
-}
 
 
 int checkFileGlobal(char * filename)
@@ -236,11 +225,6 @@ int lets_check(char * filename){
 
 };
 
-
-
-
-
-
 int ret0(){
   return 0;
 }
@@ -257,4 +241,12 @@ int ret_3(){
   return -3;
 }
 
-
+int main(int argc, char* argv[])
+{
+  /// Checker* initial = Checker__();
+  printf("USING GLOBAL OBJECT\n\n!!!");
+  initGlobal();
+  for (int i=1; i<argc; i++)
+    lets_check(argv[i]);
+   // foreachGlobal(argv[i]);
+}
