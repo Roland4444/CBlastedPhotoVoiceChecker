@@ -15,6 +15,7 @@ void loadscheckers_(Checker* self);
 int checkFile_(Checker* self, char* filename);
 Checker* Checker__();
 int checkin(char * filename);
+void lastErroeresult(int result);
 
 Session* initSession(void* handle, char* symbol, char* config)
 {
@@ -88,8 +89,14 @@ void freeMem(ContentInfo* ci)
   free(ci);
 }
 
+void lastErroeresult(int result)
+{
+  printf("LAST ERROR RESULT = %d", result);
+};
+
 int checkFile_(Checker* self, char* filename)
 {
+
   ContentInfo* ci = self->loadContent(filename);
   if (ci == NULL)
     return -1;
@@ -100,16 +107,17 @@ int checkFile_(Checker* self, char* filename)
       printf("Check failed!\n");
     else
       printf("Checking passed\n");
+    lastErroeresult(self->sessions[soundindex]->last_error);
     freemem(ci);
     return self->sessions[soundindex]->last_error;
   }
 
   printf("CHECKING photo FILE %s", filename);
-  if (!i_check(self->sessionssessions[photoindex], ci->content, ci->size))
+  if (!i_check(self->sessions[photoindex], ci->content, ci->size))
     printf("Check failed!\n");
   else
     printf("Checking passed\n");
-
+  lastErroeresult(self->sessions[photoindex]->last_error);
   freemem(ci);
   return self->sessions[photoindex]->last_error;
 
