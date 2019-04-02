@@ -1,3 +1,4 @@
+#include <common.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -5,23 +6,8 @@
 #include <string.h> 
 
 
-
-struct Version
-{
-  int major;
-  int minor;
-  int build;
-} ;
-
 typedef struct Version Version;
 
-struct Session
-{
-  Version version;
-  char* id;
-  void* payment;
-  int last_error;
-} ;
 typedef struct Session Session;  
 
 

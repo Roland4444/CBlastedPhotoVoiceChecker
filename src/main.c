@@ -8,7 +8,6 @@
 
 Checker* CheckerPtr;
 
-int read_file_content(const char* file_path, uint8_t** content, size_t* content_size);
 Session* initSession(void* handle, char* symbol, char* config);
 void initSessions_(Checker* self);
 void loadscheckers_(Checker* self);
@@ -47,7 +46,7 @@ ContentInfo* loadContent(char * filename)
   return NULL;
 }
 
-int read_file_content(const char* file_path, uint8_t** content, size_t* content_size)
+bool read_file_content(const char* file_path, uint8_t** content, size_t* content_size)
 {
   FILE* fd = fopen(file_path, "rb");
   if (fd == NULL)
@@ -179,11 +178,7 @@ Checker* Checker__()
   res->initSessions(res);
   res->loadcheckers(res);
 
-
   printf("\n\n\nVERSION===>\n\n%s\n\n\n\n",  getVersion(res));
-
-
-
   return res;
 }
 
@@ -215,14 +210,11 @@ int checkFileGlobal(char * filename)
   return CheckerPtr ->checkFile(CheckerPtr, filename);
 }
 
-
-
 int lets_check(char * filename){
   Checker* chk = Checker__();
   int result___ = checkFile_(chk, filename);
   free(chk);
   return result___;
-
 };
 
 int ret0(){
