@@ -158,7 +158,9 @@ void loadcheckers_(Checker* self)
 
 void loadsresultsymbols_(Checker* self)
 {
-  self->result = (result_session)(dlsym(self->handles[photoindex],"i_result_session"));
+  self->v_result = (result_session)(dlsym(self->handles[soundindex],"v_result_session"));
+  self->i_result = (result_session)(dlsym(self->handles[photoindex],"i_result_session"));
+
   if (!self->result)
     printf("error load i_result_session");
 }
@@ -214,9 +216,6 @@ int checkin(char * filename)
   free(initial);
   return res;
 }
-
-
-
 
 int checkFileGlobal(char * filename)
 {
