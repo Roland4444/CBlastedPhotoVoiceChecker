@@ -94,7 +94,7 @@ struct SessionValue {
     bool enable;
     enum SessionValueState state;
     double value;
-    struct SessionValue *next;
+    struct SessionValue* next;
 };
 
 struct IntValue {

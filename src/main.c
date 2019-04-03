@@ -16,6 +16,8 @@ Checker* Checker__();
 int checkin(char * filename);
 void lastErroeresult(int result);
 void freeMem(ContentInfo* ci);
+void loadsresultsymbols_(Checker* self);
+void printResult(Checker* self, Session* input)
 Session* initSession(void* handle, char* symbol, char* config)
 {
   Session* sess = (Session*)malloc(sizeof(Session));
@@ -95,7 +97,6 @@ void lastErroeresult(int result)
 
 int checkFile_(Checker* self, char* filename)
 {
-
   ContentInfo* ci = self->loadContent(filename);
   if (ci == NULL)
     return -1;
@@ -142,14 +143,21 @@ void initSessions_(Checker* self)
 
 }
 
-void loadscheckers_(Checker* self){
+void loadcheckers_(Checker* self)
+{
   self->i_check = (BKKCheck)(dlsym(self->handles[photoindex],"i_check_format"));
   self->v_check = (BKKCheck)(dlsym(self->handles[soundindex],"v_check"));
   if (!self->i_check)
     printf("error load i_check");
   if (!self->v_check)
     printf("error load v_check");
+}
 
+void loadsresultsymbols_(Checker* self)
+{
+  self->result = (BKKCheck)(dlsym(self->handles[photoindex],"i_result_session"));
+  if (!self->result)
+    printf("error load i_result_session");
 }
 
 Checker* Checker__()
@@ -171,12 +179,14 @@ Checker* Checker__()
 
   res->initSession=initSession;
   res->initSessions=initSessions_;
-  res->loadcheckers=loadscheckers_;
+  res->loadcheckers=loadcheckers_;
   res->loadContent=loadContent;
   res->checkFile = checkFile_;
+  res->loadresult = loadsresultsymbols_;
   res->foreach=foreach_;
   res->initSessions(res);
   res->loadcheckers(res);
+  res->loadresult(res);
 
   printf("\n\n\nVERSION===>\n\n%s\n\n\n\n",  getVersion(res));
   return res;
@@ -217,20 +227,9 @@ int lets_check(char * filename){
   return result___;
 };
 
-int ret0(){
-  return 0;
-}
-
-int ret1(){
-  return 1;
-}
-
-int ret_1(){
-  return -1;
-}
-
-int ret_3(){
-  return -3;
+void printResult(Checker* self, Session* input)
+{
+  SessionValue sv = self ->result
 }
 
 int main(int argc, char* argv[])
