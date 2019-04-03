@@ -234,7 +234,7 @@ void atomic(SessionValue* sv)
 {
   printf("NAME = %s\n", sv -> name);
   printf("ENABLE = %d\n", sv -> enable);
-  printf("SessionValueState = %s\n", sv -> state);
+  printf("SessionValueState = %d\n", sv -> state);
   printf("value = %f\n", sv -> value);
   if (sv -> next == NULL)
     return;
