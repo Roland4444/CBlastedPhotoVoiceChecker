@@ -263,6 +263,6 @@ int main(int argc, char* argv[])
   printf("USING GLOBAL OBJECT\n\n!!!");
   initGlobal();
   for (int i=1; i<argc; i++)
-    lets_check(argv[i]);
+    checkFileGlobal(argv[i]);
    // foreachGlobal(argv[i]);
 }
