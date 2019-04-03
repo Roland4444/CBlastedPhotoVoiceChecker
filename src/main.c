@@ -161,8 +161,14 @@ void loadsresultsymbols_(Checker* self)
   self->v_result = (result_session)(dlsym(self->handles[soundindex],"v_result_session"));
   self->i_result = (result_session)(dlsym(self->handles[photoindex],"i_result_session"));
 
-  if (!self->result)
-    printf("error load i_result_session");
+  if (!self->i_result)
+    printf("\n\nerror load i_result_session\n\n");
+  else
+    printf("\n\nsuccess load i_result_session\n\n");
+  if (!self->v_result)
+    printf("error load v_result_session");
+  else
+    printf("\n\nsuccess load v_result_session\n\n");
 }
 
 Checker* Checker__()
@@ -240,11 +246,14 @@ void atomic(SessionValue* sv)
   atomic(sv -> next);
 }
 
-void printResult(Checker* self, Session* input)
+void printResult(Checker* self, int sessionindex)
 {
   printf("Printing Session Result");
-  SessionValue* sv;
-  self -> result(input, &sv);
+  SessionValue* sv=(SessionValue*)malloc(sizeof(Sessionvalue));
+  if  (sessionindex==soundindex)
+    self -> v_result(input, &sv);
+  if  (sessionindex==photoindex)
+    self -> i_result(input, &sv);
   atomic(sv);
 }
 

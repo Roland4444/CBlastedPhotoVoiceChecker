@@ -36,7 +36,8 @@ struct Checker
   Session* sessions[2];
   BKKCheck v_check;
   BKKCheck i_check;
-  result_session result;
+  result_session v_result;
+  result_session i_result;
   ContentInfo*(*loadContent)(char * filename);
   void (*initSessions)(struct Checker*);
   Session* (*initSession)(void*, char*, char*);
