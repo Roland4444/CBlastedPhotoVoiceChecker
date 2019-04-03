@@ -38,7 +38,7 @@ Session* initSession(void* handle, char* symbol, char* config)
   return sess;
 }
 
-ContentInfo* loadContent(char * filename)
+ContentInfo* loadContent(char* filename)
 {
   ContentInfo* ci = (ContentInfo*)malloc(sizeof(ContentInfo));
   if (read_file_content(filename, &ci->content, &ci->size))
@@ -63,7 +63,7 @@ bool read_file_content(const char* file_path, uint8_t** content, size_t* content
   return 1;
 }
 
-void foreach_(Checker* self, char * filename)
+void foreach_(Checker* self, char* filename)
 {
     FILE* fp;
     char buf[1024];
@@ -218,12 +218,12 @@ int checkin(char* filename)
   return res;
 }
 
-int checkFileGlobal(char * filename)
+int checkFileGlobal(char* filename)
 {
   return CheckerPtr ->checkFile(CheckerPtr, filename);
 }
 
-int lets_check(char * filename){
+int lets_check(char* filename){
   Checker* chk = Checker__();
   int result___ = checkFile_(chk, filename);
   free(chk);
