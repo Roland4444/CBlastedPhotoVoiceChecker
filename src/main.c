@@ -17,7 +17,7 @@ int checkin(char * filename);
 void lastErroeresult(int result);
 void freeMem(ContentInfo* ci);
 void loadsresultsymbols_(Checker* self);
-void printResult(Checker* self, Session* input);
+void printResult(Checker* self, int sessionindex);
 void atomic(SessionValue* sv);
 Session* initSession(void* handle, char* symbol, char* config)
 {
@@ -108,7 +108,7 @@ int checkFile_(Checker* self, char* filename)
       printf("Check failed!\n");
     else
       printf("Checking passed\n");
-    printResult(self, self->sessions[soundindex]);
+    printResult(self, soundindex);
     lastErroeresult(self->sessions[soundindex]->last_error);
     freeMem(ci);
     return self->sessions[soundindex]->last_error;
@@ -119,7 +119,7 @@ int checkFile_(Checker* self, char* filename)
     printf("Check failed!\n");
   else
     printf("Checking passed\n");
-  printResult(self, self->sessions[photoindex]);
+  printResult(self, photoindex);
   lastErroeresult(self->sessions[photoindex]->last_error);
   freeMem(ci);
   return self->sessions[photoindex]->last_error;
@@ -249,11 +249,11 @@ void atomic(SessionValue* sv)
 void printResult(Checker* self, int sessionindex)
 {
   printf("Printing Session Result");
-  SessionValue* sv=(SessionValue*)malloc(sizeof(Sessionvalue));
+  SessionValue* sv=(SessionValue*)malloc(sizeof(SessionValue));
   if  (sessionindex==soundindex)
-    self -> v_result(input, &sv);
+    self -> v_result(self->sessions[soundindex], &sv);
   if  (sessionindex==photoindex)
-    self -> i_result(input, &sv);
+    self -> i_result(self->sessions[photoindex], &sv);
   atomic(sv);
 }
 
