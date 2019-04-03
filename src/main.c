@@ -24,13 +24,13 @@ Session* initSession(void* handle, char* symbol, char* config)
   Session* sess = (Session*)malloc(sizeof(Session));
   create_session load = (create_session)(dlsym(handle, symbol));
   if (!load){
-    printf("error loading %s\n\n\n", symbol );
+    printf("error loading %s\n\n\n", symbol);
     sess=NULL;
   }
-  sess->id="my_session";
+  sess->id = "my_session";
   if (!load(sess, config)){
     printf("error create session\n\n");
-    sess=NULL;
+    sess = NULL;
     return sess;
   }
   printf("Session creates succesfully\n\n");
@@ -42,8 +42,8 @@ Session* initSession(void* handle, char* symbol, char* config)
 
 ContentInfo* loadContent(char * filename)
 {
-  ContentInfo* ci=(ContentInfo*)malloc(sizeof(ContentInfo));
-  if (read_file_content(filename, &ci ->content, &ci->size))
+  ContentInfo* ci = (ContentInfo*)malloc(sizeof(ContentInfo));
+  if (read_file_content(filename, &ci->content, &ci->size))
     return ci;
   freeMem(ci);
   return NULL;
@@ -70,14 +70,12 @@ void foreach_(Checker* self, char * filename)
 {
     FILE* fp;
     char buf[1024];
-    if ((fp = fopen(filename, "r")) == NULL)
-    {
+    if ((fp = fopen(filename, "r")) == NULL){
         perror("fopen source-file");
         return;
     }
 
-    while (fgets(buf, sizeof(buf), fp) != NULL)
-    {
+    while (fgets(buf, sizeof(buf), fp) != NULL){
         buf[strlen(buf) - 1] = '\0'; // eat the newline fgets() stores
         self->checkFile(self, buf);
     }
@@ -102,7 +100,7 @@ int checkFile_(Checker* self, char* filename)
   if (ci == NULL)
     return -1;
   printf("SIZE CONTENT==%d\n\n\n", ci->size);
-  if (strstr(filename, "wav")!=NULL){
+  if (strstr(filename, ".wav")!=NULL){
     printf("CHECKING WAV FILE %s", filename);
     if (!self->v_check(self->sessions[soundindex], ci->content, ci->size))
       printf("Check failed!\n");
@@ -188,13 +186,13 @@ Checker* Checker__()
   else
     printf("Load success photo so");
 
-  res->initSession=initSession;
-  res->initSessions=initSessions_;
-  res->loadcheckers=loadcheckers_;
-  res->loadContent=loadContent;
+  res->initSession = initSession;
+  res->initSessions = initSessions_;
+  res->loadcheckers = loadcheckers_;
+  res->loadContent = loadContent;
   res->checkFile = checkFile_;
   res->loadresult = loadsresultsymbols_;
-  res->foreach=foreach_;
+  res->foreach = foreach_;
   res->initSessions(res);
   res->loadcheckers(res);
   res->loadresult(res);
@@ -203,7 +201,7 @@ Checker* Checker__()
   return res;
 }
 
-void foreachGlobal(char * filename)
+void foreachGlobal(char* filename)
 {
   printf("CALL  GLOBAL FOREACH>>\n\n");
   foreach_(CheckerPtr, filename);
@@ -214,7 +212,7 @@ void initGlobal()
   CheckerPtr = Checker__();
 }
 
-int checkin(char * filename)
+int checkin(char* filename)
 {
   int res;
   Checker* initial = Checker__();
@@ -237,23 +235,23 @@ int lets_check(char * filename){
 
 void atomic(SessionValue* sv)
 {
-  printf("NAME = %s\n", sv -> name);
-  printf("ENABLE = %d\n", sv -> enable);
-  printf("SessionValueState = %d\n", sv -> state);
-  printf("value = %f\n", sv -> value);
-  if (sv -> next == NULL)
+  printf("NAME = %s\n", sv->name);
+  printf("ENABLE = %d\n", sv->enable);
+  printf("SessionValueState = %d\n", sv->state);
+  printf("value = %f\n", sv->value);
+  if (sv->next == NULL)
     return;
-  atomic(sv -> next);
+  atomic(sv->next);
 }
 
 void printResult(Checker* self, int sessionindex)
 {
   printf("Printing Session Result");
-  SessionValue* sv=(SessionValue*)malloc(sizeof(SessionValue));
-  if  (sessionindex==soundindex)
-    self -> v_result(self->sessions[soundindex], &sv);
+  SessionValue* sv = (SessionValue*)malloc(sizeof(SessionValue));
+  if  (sessionindex == soundindex)
+    self->v_result(self->sessions[soundindex], &sv);
   if  (sessionindex==photoindex)
-    self -> i_result(self->sessions[photoindex], &sv);
+    self->i_result(self->sessions[photoindex], &sv);
   atomic(sv);
 }
 
