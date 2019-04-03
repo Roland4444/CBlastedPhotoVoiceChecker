@@ -132,7 +132,7 @@ void initSessions_(Checker* self)
   self->sessions[soundindex]=self->initSession(self->handles[soundindex], "v_create_session", soundconfig);
   int i;
   for (i=0;i<2; i++){
-    if (self->sessions[i]==NULL)
+    if (self->sessions[i] == NULL)
       printf("Error create session #%d\n", i);
   }
 }
@@ -243,7 +243,7 @@ void printResult(Checker* self, int sessionindex)
   SessionValue* sv = (SessionValue*)malloc(sizeof(SessionValue));
   if  (sessionindex == soundindex)
     self->v_result(self->sessions[soundindex], &sv);
-  if  (sessionindex==photoindex)
+  if  (sessionindex == photoindex)
     self->i_result(self->sessions[photoindex], &sv);
   atomic(sv);
 }
