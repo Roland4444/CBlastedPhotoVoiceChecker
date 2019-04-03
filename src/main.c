@@ -118,14 +118,12 @@ int checkFile_(Checker* self, char* filename)
   lastErroeresult(self->sessions[photoindex]->last_error);
   freeMem(ci);
   return self->sessions[photoindex]->last_error;
-
 }
 
 char* getVersion(Checker* self)
 {
   v_session_configuration_version get_sess_version = (v_session_configuration_version)(dlsym(self->handles[soundindex],"v_session_configuration_version"));
   return get_sess_version(self->sessions[soundindex]);
-
 }
 
 void initSessions_(Checker* self)
@@ -137,8 +135,6 @@ void initSessions_(Checker* self)
     if (self->sessions[i]==NULL)
       printf("Error create session #%d\n", i);
   }
-
-
 }
 
 void loadcheckers_(Checker* self)
