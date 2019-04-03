@@ -17,7 +17,7 @@ int checkin(char * filename);
 void lastErroeresult(int result);
 void freeMem(ContentInfo* ci);
 void loadsresultsymbols_(Checker* self);
-void printResult(Checker* self, int sessionindex);
+void printResult(Checker* self, Session* input);
 void atomic(SessionValue* sv);
 Session* initSession(void* handle, char* symbol, char* config)
 {
@@ -108,7 +108,7 @@ int checkFile_(Checker* self, char* filename)
       printf("Check failed!\n");
     else
       printf("Checking passed\n");
-    printResult(self, soundindex);
+    printResult(self, self->sessions[soundindex]);
     lastErroeresult(self->sessions[soundindex]->last_error);
     freeMem(ci);
     return self->sessions[soundindex]->last_error;
@@ -119,7 +119,7 @@ int checkFile_(Checker* self, char* filename)
     printf("Check failed!\n");
   else
     printf("Checking passed\n");
-  printResult(self, photoindex);
+  printResult(self, self->sessions[photoindex]);
   lastErroeresult(self->sessions[photoindex]->last_error);
   freeMem(ci);
   return self->sessions[photoindex]->last_error;
@@ -158,17 +158,23 @@ void loadcheckers_(Checker* self)
 
 void loadsresultsymbols_(Checker* self)
 {
-  self->v_result = (result_session)(dlsym(self->handles[soundindex],"v_result_session"));
-  self->i_result = (result_session)(dlsym(self->handles[photoindex],"i_result_session"));
+  self->result = (result_session)(dlsym(self->handles[soundindex],"v_result_session"));
+  //self->i_result = (result_session)(dlsym(self->handles[photoindex],"i_result_session"));
 
-  if (!self->i_result)
-    printf("\n\nerror load i_result_session\n\n");
+    if (!self->result)
+    printf("\n\nerror load (i_)result_session\n\n");
+  else
+    printf("\n\nsuccess load (i_)result_session\n\n");
+
+ /* if (!self->i_result)
+    printf("\n\nerror load (i_)result_session\n\n");
   else
     printf("\n\nsuccess load i_result_session\n\n");
   if (!self->v_result)
     printf("error load v_result_session");
   else
-    printf("\n\nsuccess load v_result_session\n\n");
+     printf("\n\nsuccess load v_result_session\n\n");
+  */
 }
 
 Checker* Checker__()
@@ -237,23 +243,20 @@ int lets_check(char * filename){
 
 void atomic(SessionValue* sv)
 {
-  printf("NAME = %s\n", sv -> name);
+  printf("\n\nNAME = %s\n", sv -> name);
   printf("ENABLE = %d\n", sv -> enable);
   printf("SessionValueState = %d\n", sv -> state);
-  printf("value = %f\n", sv -> value);
+  printf("value = %f\n\n\n", sv -> value);
   if (sv -> next == NULL)
     return;
   atomic(sv -> next);
 }
 
-void printResult(Checker* self, int sessionindex)
+void printResult(Checker* self, Session* input)
 {
   printf("Printing Session Result");
   SessionValue* sv=(SessionValue*)malloc(sizeof(SessionValue));
-  if  (sessionindex==soundindex)
-    self -> v_result(self->sessions[soundindex], &sv);
-  if  (sessionindex==photoindex)
-    self -> i_result(self->sessions[photoindex], &sv);
+  self -> result(input, &sv);
   atomic(sv);
 }
 
