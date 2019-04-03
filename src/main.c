@@ -108,6 +108,7 @@ int checkFile_(Checker* self, char* filename)
       printf("Check failed!\n");
     else
       printf("Checking passed\n");
+    printResult(self, self->sessions[soundindex]);
     lastErroeresult(self->sessions[soundindex]->last_error);
     freeMem(ci);
     return self->sessions[soundindex]->last_error;
@@ -118,6 +119,7 @@ int checkFile_(Checker* self, char* filename)
     printf("Check failed!\n");
   else
     printf("Checking passed\n");
+  printResult(self, self->sessions[photoindex]);
   lastErroeresult(self->sessions[photoindex]->last_error);
   freeMem(ci);
   return self->sessions[photoindex]->last_error;
