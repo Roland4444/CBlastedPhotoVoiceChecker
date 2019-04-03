@@ -17,7 +17,8 @@ int checkin(char * filename);
 void lastErroeresult(int result);
 void freeMem(ContentInfo* ci);
 void loadsresultsymbols_(Checker* self);
-void printResult(Checker* self, Session* input)
+void printResult(Checker* self, Session* input);
+void atomic(SessionValue* sv);
 Session* initSession(void* handle, char* symbol, char* config)
 {
   Session* sess = (Session*)malloc(sizeof(Session));
@@ -155,7 +156,7 @@ void loadcheckers_(Checker* self)
 
 void loadsresultsymbols_(Checker* self)
 {
-  self->result = (BKKCheck)(dlsym(self->handles[photoindex],"i_result_session"));
+  self->result = (result_session)(dlsym(self->handles[photoindex],"i_result_session"));
   if (!self->result)
     printf("error load i_result_session");
 }
@@ -227,9 +228,23 @@ int lets_check(char * filename){
   return result___;
 };
 
+void atomic(SessionValue* sv)
+{
+  printf("NAME = %s\n", sv -> name);
+  printf("ENABLE = %d\n", sv -> enable);
+  printf("SessionValueState = %s\n", sv -> state);
+  printf("value = %f\n", sv -> value);
+  if (sv -> next == NULL)
+    return;
+  atomic(sv -> next);
+}
+
 void printResult(Checker* self, Session* input)
 {
-  SessionValue sv = self ->result
+  printf("Printing Session Result");
+  SessionValue* sv;
+  self -> result(input, &sv);
+  atomic(sv);
 }
 
 int main(int argc, char* argv[])
