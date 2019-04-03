@@ -34,9 +34,7 @@ Session* initSession(void* handle, char* symbol, char* config)
     return sess;
   }
   printf("Session creates succesfully\n\n");
-
   printf("\n\nVERSION=>>\nMajor %d, minor %d, build %d\n\n\n", sess->version.major, sess->version.minor, sess->version.build);
-
   return sess;
 }
 
@@ -52,8 +50,7 @@ ContentInfo* loadContent(char * filename)
 bool read_file_content(const char* file_path, uint8_t** content, size_t* content_size)
 {
   FILE* fd = fopen(file_path, "rb");
-  if (fd == NULL)
-  {
+  if (fd == NULL){
     fprintf(stderr, "file \"%s\" not found\n", file_path);
     return 0;
   }
