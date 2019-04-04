@@ -27,8 +27,33 @@ typedef int (*BKK)(Session*,  char *path_to_config);
 typedef int (*i_check_format)(Session*,  uint8_t*, uint64_t);
 typedef char* (*v_session_configuration_version)(struct Session*);
 typedef bool (*result_session)(Session*, SessionValue**);
+struct SoundSessionResult {
+    struct SessionValue length;
+    struct SessionValue duration;
+    struct SessionValue depth;
+    struct SessionValue channels;
+    struct SessionValue sample_rate;
+    struct SessionValue telephony_border;
+    struct SessionValue overload;
+    struct SessionValue silent;
+    struct SessionValue signal_noise;
+};
 
-
+struct PrivateSession {
+    uint32_t magic;
+    struct IntValue signal_noise;
+    struct IntValue duration;
+    struct IntValue sample_rate;
+    struct IntValue channels;
+    struct IntValue depth;
+    struct IntValue length;
+    struct IntValue frequency;
+    struct SingleIntValue telephony_border;
+    struct SingleFloatValue overload_border;
+    char *processing_output_sound;
+    struct SoundSessionResult result;
+    char configuration_version[20];
+};
 struct Checker
 {
   void(*Checker)(void);    

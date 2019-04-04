@@ -20,6 +20,7 @@ void freeMem(ContentInfo* ci);
 void loadsresultsymbols_(Checker* self);
 void printResult(Checker* self, int sessionindex);
 void atomic(SessionValue* sv, FILE* fp);
+void readCongig(Session* sess);
 Session* initSession(void* handle, char* symbol, char* config)
 {
   Session* sess = (Session*)malloc(sizeof(Session));
@@ -194,6 +195,7 @@ Checker* Checker__()
   res->loadcheckers(res);
   res->loadresult(res);
 
+  readCongig(res->sessions[soundindex]);
   printf("\n\n\nVERSION===>\n\n%s\n\n\n\n",  getVersion(res));
   return res;
 }
@@ -230,7 +232,13 @@ int lets_check(char* filename){
   return result___;
 };
 
-
+void readCongig(Session* sess)
+{
+  struct PrivateSession* ps;
+  ps = (struct PrivateSession *) sess->payment;
+  float f = ps->overload_border.value;
+  printf("OVERALOARD BORDER ==>%f", f);
+}
 
 void atomic(SessionValue* sv, FILE* fp)
 {
