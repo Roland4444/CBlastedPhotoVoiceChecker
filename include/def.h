@@ -23,7 +23,7 @@ typedef struct ContentInfo ContentInfo;
 typedef int (*create_session)(struct Session*, char*);
 typedef int (*BKKCheck)(Session*,  uint8_t*, uint64_t);
 
-typedef int (*BKK)(Session*,  char *path_to_config);
+typedef int (*BKK)(Session*,  char*);
 typedef int (*i_check_format)(Session*,  uint8_t*, uint64_t);
 typedef char* (*v_session_configuration_version)(struct Session*);
 typedef bool (*result_session)(Session*, SessionValue**);
