@@ -230,12 +230,22 @@ int lets_check(char* filename){
   return result___;
 };
 
+
+
 void atomic(SessionValue* sv, FILE* fp)
 {
   printf("NAME = %s\n", sv->name);
+  fprintf(fp, "NAME = %s\n", sv->name);
+
   printf("ENABLE = %d\n", sv->enable);
+  fprintf(fp,"ENABLE = %d\n", sv->enable);
+
   printf("SessionValueState = %d\n", sv->state);
+  fprintf(fp, "SessionValueState = %d\n", sv->state);
+
   printf("value = %f\n", sv->value);
+  fprintf(fp, "value = %f\n", sv->value);
+
   if (sv->next == NULL){
     fclose(fp);
     return;
