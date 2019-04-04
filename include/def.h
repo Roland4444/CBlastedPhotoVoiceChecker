@@ -34,6 +34,7 @@ struct Checker
   void(*Checker)(void);    
   void* handles[2];
   Session* sessions[2];
+  FILE* log;
   BKKCheck v_check;
   BKKCheck i_check;
   result_session v_result;

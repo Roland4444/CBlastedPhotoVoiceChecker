@@ -5,6 +5,7 @@
 #define photoconfig "./ci_configuration.json"
 #define soundindex 0
 #define photoindex 1
+#define LOGFILE "./log.txt"
 
 Checker* CheckerPtr;
 
@@ -18,7 +19,7 @@ void lastErroeresult(int result);
 void freeMem(ContentInfo* ci);
 void loadsresultsymbols_(Checker* self);
 void printResult(Checker* self, int sessionindex);
-void atomic(SessionValue* sv);
+void atomic(SessionValue* sv, FILE* fp);
 Session* initSession(void* handle, char* symbol, char* config)
 {
   Session* sess = (Session*)malloc(sizeof(Session));
@@ -97,8 +98,10 @@ int checkFile_(Checker* self, char* filename)
   if (ci == NULL)
     return -1;
   printf("SIZE CONTENT==%d\n\n\n", ci->size);
+  self -> log = fopen(LOGFILE, "a");
   if (strstr(filename, ".wav")!=NULL){
     printf("CHECKING WAV FILE %s", filename);
+    fprintf(self -> log, "CHECKING WAV FILE %s", filename);
     if (!self->v_check(self->sessions[soundindex], ci->content, ci->size))
       printf("Check failed!\n");
     else
@@ -110,6 +113,7 @@ int checkFile_(Checker* self, char* filename)
   }
 
   printf("CHECKING photo FILE %s", filename);
+  fprintf(self -> log, "CHECKING photo FILE %s", filename);
   if (!self->i_check(self->sessions[photoindex], ci->content, ci->size))
     printf("Check failed!\n");
   else
@@ -226,15 +230,17 @@ int lets_check(char* filename){
   return result___;
 };
 
-void atomic(SessionValue* sv)
+void atomic(SessionValue* sv, FILE* fp)
 {
   printf("NAME = %s\n", sv->name);
   printf("ENABLE = %d\n", sv->enable);
   printf("SessionValueState = %d\n", sv->state);
   printf("value = %f\n", sv->value);
-  if (sv->next == NULL)
+  if (sv->next == NULL){
+    fclose(fp);
     return;
-  atomic(sv->next);
+  }
+  atomic(sv->next, fp);
 }
 
 void printResult(Checker* self, int sessionindex)
@@ -245,7 +251,7 @@ void printResult(Checker* self, int sessionindex)
     self->v_result(self->sessions[soundindex], &sv);
   if  (sessionindex == photoindex)
     self->i_result(self->sessions[photoindex], &sv);
-  atomic(sv);
+  atomic(sv, self -> log);
 }
 
 int main(int argc, char* argv[])
