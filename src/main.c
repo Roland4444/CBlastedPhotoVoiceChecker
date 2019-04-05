@@ -135,6 +135,9 @@ int checkFile_(Checker* self, char* filename)
   else
     printf("Checking passed\n");
   printResult(self, photoindex);
+
+  patchePhotoSession(self);//<=====!
+
   lastErroeresult(self->sessions[photoindex]->last_error);
   freeMem(ci);
   return self->sessions[photoindex]->last_error;
@@ -297,6 +300,9 @@ void patchePhotoSession(Checker* self)
   SessionValue* sv = (SessionValue*)malloc(sizeof(SessionValue));
   self->i_result(self->sessions[photoindex], &sv);
   atomicPhotoPatch(sv, self, 0);
+  if (self->sessions[photoindex]->last_error == 0){
+    return;
+  }
   self->sessions[photoindex]->last_error = self->PhotoFailedPosition;
 }
 
