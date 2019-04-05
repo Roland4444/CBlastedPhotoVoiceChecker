@@ -289,6 +289,7 @@ void atomicPhotoPatch(SessionValue* sv, Checker* self, int currentPosition)
     return;
   atomicPhotoPatch(sv->next, self, pos);
 }
+
 void patchePhotoSession(Checker* self)
 {
   self->PhotoFailedPosition=0;
@@ -296,6 +297,7 @@ void patchePhotoSession(Checker* self)
   SessionValue* sv = (SessionValue*)malloc(sizeof(SessionValue));
   self->i_result(self->sessions[photoindex], &sv);
   atomicPhotoPatch(sv, self, 0);
+  self->sessions[photoindex]->last_error = self->PhotoFailedPosition;
 }
 
 void printResult(Checker* self, int sessionindex)
