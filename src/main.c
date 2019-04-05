@@ -88,6 +88,12 @@ void freeMem(ContentInfo* ci)
   free(ci);
 }
 
+void parchResultSession(Session* sess)
+{
+  printf("\n\nPatching last Error!\n\n");
+  sess->last_error=2020;
+}
+
 void lastErroeresult(int result)
 {
   printf("LAST ERROR RESULT = %d", result);
@@ -109,7 +115,11 @@ int checkFile_(Checker* self, char* filename)
       printf("Checking passed\n");
     printResult(self, soundindex);
     lastErroeresult(self->sessions[soundindex]->last_error);
+
+
+    parchResultSession(self->sessions[soundindex]);////////////////////
     freeMem(ci);
+
     return self->sessions[soundindex]->last_error;
   }
 
@@ -222,7 +232,7 @@ int checkin(char* filename)
 
 int checkFileGlobal(char* filename)
 {
-  return CheckerPtr ->checkFile(CheckerPtr, filename);
+  return CheckerPtr->checkFile(CheckerPtr, filename);
 }
 
 int lets_check(char* filename){
