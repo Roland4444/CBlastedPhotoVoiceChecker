@@ -120,9 +120,6 @@ int checkFile_(Checker* self, char* filename)
       printf("Checking passed\n");
     printResult(self, soundindex);
     lastErroeresult(self->sessions[soundindex]->last_error);
-
-
-    parchResultSession(self->sessions[soundindex]);////////////////////
     freeMem(ci);
 
     return self->sessions[soundindex]->last_error;
