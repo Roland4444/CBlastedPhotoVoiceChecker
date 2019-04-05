@@ -5,6 +5,7 @@
 #include <dlfcn.h>
 #include <string.h> 
 
+#define DEFAULT_ERROR_STATE 2
 
 typedef struct Version Version;
 
@@ -72,6 +73,7 @@ struct Checker
   void (*printresult)(Session*);
   int (*checkFile)(struct Checker*, char*);
   void (*foreach)(struct Checker*, char*);
+  int PhotoFailedPosition;
 };
 
 typedef struct Checker Checker;

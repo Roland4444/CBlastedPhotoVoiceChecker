@@ -18,9 +18,14 @@ int checkin(char * filename);
 void lastErroeresult(int result);
 void freeMem(ContentInfo* ci);
 void loadsresultsymbols_(Checker* self);
+void readCongig(Session* sess);
+
 void printResult(Checker* self, int sessionindex);
 void atomic(SessionValue* sv, FILE* fp);
-void readCongig(Session* sess);
+
+void patchePhotoSession(Checker* self);
+void atomicPhotoPatch(SessionValue* sv, Checker* self, int currentPosition);
+
 Session* initSession(void* handle, char* symbol, char* config)
 {
   Session* sess = (Session*)malloc(sizeof(Session));
@@ -269,6 +274,28 @@ void atomic(SessionValue* sv, FILE* fp)
     return;
   }
   atomic(sv->next, fp);
+}
+
+
+void atomicPhotoPatch(SessionValue* sv, Checker* self, int currentPosition)
+{
+  int pos = currentPosition + 1;
+  if (sv->state == DEFAULT_ERROR_STATE){
+    printf("\n\nFailed state found >>Position #%d, Name=%s\n\n", pos, sv->name);
+    self->PhotoFailedPosition = pos;
+    return;
+  }
+  if (sv->next == NULL)
+    return;
+  atomicPhotoPatch(sv->next, self, pos);
+}
+void patchePhotoSession(Checker* self)
+{
+  self->PhotoFailedPosition=0;
+
+  SessionValue* sv = (SessionValue*)malloc(sizeof(SessionValue));
+  self->i_result(self->sessions[photoindex], &sv);
+  atomicPhotoPatch(sv, self, 0);
 }
 
 void printResult(Checker* self, int sessionindex)
