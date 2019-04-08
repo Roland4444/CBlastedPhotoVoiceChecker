@@ -7,6 +7,8 @@
 
 #define DEFAULT_ERROR_STATE 2
 
+
+
 typedef struct Version Version;
 
 typedef struct Session Session; 
@@ -57,8 +59,8 @@ struct PrivateSession {
 };
 
 struct Answer{
-  int ProblemPos;
-  double value;
+  uint8_t ProblemPos;
+  int8_t value;
 };
 
 typedef struct Answer Answer;
@@ -79,10 +81,10 @@ struct Checker
   void (*loadcheckers)(struct Checker*);
   void (*loadresult)(struct Checker*);
   void (*printresult)(Session*);
-  int (*checkFile)(struct Checker*, char*);
+  unsigned char * (*checkFile)(struct Checker*, char*);
   void (*foreach)(struct Checker*, char*);
   int PhotoFailedPosition;
-  double WrongPhotoValue;
+  int8_t WrongPhotoValue;
 };
 
 typedef struct Checker Checker;

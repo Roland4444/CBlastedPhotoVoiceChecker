@@ -12,7 +12,7 @@ Checker* CheckerPtr;
 Session* initSession(void* handle, char* symbol, char* config);
 void initSessions_(Checker* self);
 void loadscheckers_(Checker* self);
-int checkFile_(Checker* self, char* filename);
+unsigned char* checkFile_(Checker* self, char* filename);
 Checker* Checker__();
 int checkin(char * filename);
 void lastErroeresult(int result);
@@ -25,6 +25,8 @@ void atomic(SessionValue* sv, FILE* fp);
 
 void patchePhotoSession(Checker* self);
 void atomicPhotoPatch(SessionValue* sv, Checker* self, int currentPosition);
+
+unsigned char* buildAnswer(uint8_t result, int8_t value);
 
 Session* initSession(void* handle, char* symbol, char* config)
 {
@@ -104,11 +106,11 @@ void lastErroeresult(int result)
   printf("LAST ERROR RESULT = %d", result);
 };
 
-int checkFile_(Checker* self, char* filename)
+unsigned char* checkFile_(Checker* self, char* filename)
 {
   ContentInfo* ci = self->loadContent(filename);
   if (ci == NULL)
-    return -1;
+    return NULL;
   printf("SIZE CONTENT==%d\n\n\n", ci->size);
   self -> log = fopen(LOGFILE, "a");
   if (strstr(filename, ".wav")!=NULL){
@@ -121,8 +123,8 @@ int checkFile_(Checker* self, char* filename)
     printResult(self, soundindex);
     lastErroeresult(self->sessions[soundindex]->last_error);
     freeMem(ci);
-
-    return self->sessions[soundindex]->last_error;
+    uint8_t result =  self->sessions[soundindex]->last_error;
+    return buildAnswer(result, 0);
   }
 
   printf("CHECKING photo FILE %s", filename);
@@ -134,10 +136,10 @@ int checkFile_(Checker* self, char* filename)
   printResult(self, photoindex);
 
   patchePhotoSession(self);//<=====!
-
+  uint8_t result =  self->sessions[soundindex]->last_error;
   lastErroeresult(self->sessions[photoindex]->last_error);
   freeMem(ci);
-  return self->sessions[photoindex]->last_error;
+  return buildAnswer(result, self->WrongPhotoValue);
 }
 
 char* getVersion(Checker* self)
@@ -226,26 +228,11 @@ void initGlobal()
   CheckerPtr = Checker__();
 }
 
-int checkin(char* filename)
-{
-  int res;
-  Checker* initial = Checker__();
-  res = initial ->checkFile(initial, filename);
-  free(initial);
-  return res;
-}
 
-int checkFileGlobal(char* filename)
+uint8_t checkFileGlobal(char* filename)
 {
-  return CheckerPtr->checkFile(CheckerPtr, filename);
+  return *(CheckerPtr->checkFile(CheckerPtr, filename));
 }
-
-int lets_check(char* filename){
-  Checker* chk = Checker__();
-  int result___ = checkFile_(chk, filename);
-  free(chk);
-  return result___;
-};
 
 void readCongig(Session* sess)
 {
@@ -283,6 +270,7 @@ void atomicPhotoPatch(SessionValue* sv, Checker* self, int currentPosition)
   if (sv->state == DEFAULT_ERROR_STATE){
     printf("\n\nFailed state found >>Position #%d, Name=%s\n\n", pos, sv->name);
     self->PhotoFailedPosition = pos;
+    self->WrongPhotoValue = sv->value;
     return;
   }
   if (sv->next == NULL)
@@ -314,9 +302,18 @@ void printResult(Checker* self, int sessionindex)
   atomic(sv, self -> log);
 }
 
+unsigned char* buildAnswer(uint8_t result, int8_t value)
+{
+  Answer* ans = (Answer*)malloc(sizeof(Answer));
+  ans->ProblemPos = result;
+  ans->value = value;
+  return (unsigned char*) ans;
+}
+
 int main(int argc, char* argv[])
 {
   /// Checker* initial = Checker__();
+  printf("\n\nsize of double %d\n\n", sizeof(double));
   printf("USING GLOBAL OBJECT\n\n!!!");
   initGlobal();
   for (int i=1; i<argc; i++)
