@@ -270,7 +270,7 @@ void atomicPhotoPatch(SessionValue* sv, Checker* self, int currentPosition)
 {
   int pos = currentPosition + 1;
   if (sv->enable){
-    if (sv->state != SESSION_VALUE_PASSED{
+    if (sv->state != 1){
     printf("\n\nFailed state found >>Position #%d, Name=%s\n\n", pos, sv->name);
     self->PhotoFailedPosition = pos;
     self->WrongPhotoValue = sv->value;
