@@ -7,6 +7,7 @@
 #define photoindex 1
 #define LOGFILE "./log.txt"
 
+char* example = "Example";
 Checker* CheckerPtr;
 
 Session* initSession(void* handle, char* symbol, char* config);
@@ -26,6 +27,9 @@ void atomic(SessionValue* sv, FILE* fp);
 void patchePhotoSession(Checker* self);
 void atomicPhotoPatch(SessionValue* sv, Checker* self, int currentPosition);
 
+double getPhotoProblemValueGlobal();
+char* getPhotoProblemNameGlobal();
+char* sendExampleString();
 
 Session* initSession(void* handle, char* symbol, char* config)
 {
@@ -310,6 +314,12 @@ char* getPhotoProblemNameGlobal()
 {
   return CheckerPtr->WrongPhotoName;
 }
+
+char* sendExampleString()
+{
+  return example;
+}
+
 int main(int argc, char* argv[])
 {
   /// Checker* initial = Checker__();
