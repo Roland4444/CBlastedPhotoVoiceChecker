@@ -58,13 +58,6 @@ struct PrivateSession {
   char configuration_version[20];
 };
 
-struct Answer{
-  uint8_t ProblemPos;
-  int8_t value;
-};
-
-typedef struct Answer Answer;
-
 struct Checker
 {
   void(*Checker)(void);    
@@ -85,6 +78,7 @@ struct Checker
   void (*foreach)(struct Checker*, char*);
   int PhotoFailedPosition;
   double WrongPhotoValue;
+  char* WrongPhotoName;
 };
 
 typedef struct Checker Checker;

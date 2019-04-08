@@ -269,6 +269,7 @@ void atomicPhotoPatch(SessionValue* sv, Checker* self, int currentPosition)
     printf("\n\nFailed state found >>Position #%d, Name=%s\n\n", pos, sv->name);
     self->PhotoFailedPosition = pos;
     self->WrongPhotoValue = sv->value;
+    self->WrongPhotoName = sv->name;
     return;
   }
   if (sv->next == NULL)
@@ -303,6 +304,11 @@ void printResult(Checker* self, int sessionindex)
 double getPhotoProblemValueGlobal()
 {
   return CheckerPtr->WrongPhotoValue;
+}
+
+char* getPhotoProblemNameGlobal()
+{
+  return CheckerPtr->WrongPhotoName;
 }
 int main(int argc, char* argv[])
 {
