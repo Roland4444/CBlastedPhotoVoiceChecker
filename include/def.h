@@ -81,10 +81,10 @@ struct Checker
   void (*loadcheckers)(struct Checker*);
   void (*loadresult)(struct Checker*);
   void (*printresult)(Session*);
-  unsigned char * (*checkFile)(struct Checker*, char*);
+  int (*checkFile)(struct Checker*, char*);
   void (*foreach)(struct Checker*, char*);
   int PhotoFailedPosition;
-  int8_t WrongPhotoValue;
+  double WrongPhotoValue;
 };
 
 typedef struct Checker Checker;
