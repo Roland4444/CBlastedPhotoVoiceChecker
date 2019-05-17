@@ -1,6 +1,6 @@
 #include <def.h>
-#define soundso "./libsqc.so"
-#define photoso "./libBKKAdaptor.so"
+#define soundso "./libquality_sound.so.1"
+#define photoso "./libquality_photo.so.1"
 #define soundconfig "./cv_configuration.json"
 #define photoconfig "./ci_configuration.json"
 #define soundindex 0
